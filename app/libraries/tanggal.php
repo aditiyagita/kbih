@@ -47,6 +47,19 @@ class Tanggal {
         return $tahunajar;
     }
 
+    public function tahun(  )
+    {
+        $th = (date('Y'))-5;
+        $i=0;
+        
+        while ($th<=((date('Y'))+5)) {
+            $tahun[$i] = $th;
+            $th++;
+            $i++;            
+        }
+        return $tahun;
+    }
+
     
 
 }

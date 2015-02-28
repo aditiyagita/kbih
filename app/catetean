@@ -1,0 +1,136 @@
+hrdstaff absensi
+
+menu pelamar ditaro di lamaran
+buat submenu pelamar
+
+data pelamar yang diterima jadi pegawai maka dihapus dan create di pegawai
+
+
+kata-katanya disamain lagi
+
+
+
+
+
+LIST UDAH DIUBAH
+
+register
+
+register pelamar
+
+===============================
+
+PELAMAR
+
+===============================
+
+pelamar menu
+update profil
+pendidikan
+kursus dan pelatihan
+bahasa
+pengalaman kerja
+keterangan keluarga
+referensi
+pertanyaan
+
+===============================
+
+HRDSTAFF
+
+===============================
+
+karyawan
+	-> index 		done   ***NO URUT MASIH NGACO***
+	-> update 		done
+	-> add 			done
+	-> delete		done	** DELETE CUTI, PELATIHAN, PENGUNDURAN DIRI** ## BELOM CEK
+
+lowongan kerja
+	[clear]
+
+lamaran
+	-> approve lamaran [index]	[clear]
+	-> daftar pelamar done
+	-> detail pelamar done
+	-> terima lamaran done
+
+lamaran [submenu manage pelamar]
+	-> index done
+	-> detail done
+	-> delete done
+
+cuti
+	-> setting cuti [clear]
+	-> daftar cuti done
+
+pelatihan
+	-> index 		[clear]
+	-> update 		[clear]
+	-> add 			[clear]
+	-> delete		[clear]
+
+pelatihan [submenu detail pelatihan]
+	-> index 		done
+	-> detail		done
+
+pengunduran diri
+	-> index 		[clear]
+	-> detail		[clear]
+
+update profil 		done
+
+===============================
+
+KARYAWAN
+
+===============================
+
+CLEAR ALL
+
+===============================
+
+HRDMANAGER
+
+===============================
+
+absensi 
+	# list absensi 		done
+	# accept absensi	done
+
+cuti
+	# Approve cuti index 	done
+	# Approve cuti detail	done
+	# Approve cuti			[clear]
+	# Unapprove cuti		***BELUM TEST***
+
+pelatihan 	[clear]
+
+pengunduran diri
+	# index				done
+	# unapprove 		[clear]
+	# Approve 			***BELUM TEST***
+
+===============================
+
+KEUANGAN
+
+===============================
+
+	# pelatihan 		[clear]
+	# penggajian		done
+
+===============================
+
+DIREKTUR
+
+===============================
+
+# cuti laporan 		done
+# cuti surat		done
+# PELATIHAN 		done
+# penggajian 		done
+# absensi 			done
+
+
+NOTIF DONE

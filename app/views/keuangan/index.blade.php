@@ -1,46 +1,53 @@
 @extends('master')
 
 @section('content')
-<body>
-	@include('menu')
-	</div>
-	<div class="container-fluid" id="content"> <!-- <div class="container-fluid nav-hidden" id="content"> -->
-		@include('keuangan.left')
-		<div id="main">
-			<div class="container-fluid">
-				<div class="page-header">
-					<div class="pull-left">
-						<h1>Selamat Datang</h1>
-					</div>
-					<div class="pull-right">
-						<ul class="stats">
-							<li class='lightred'>
-								<i class="icon-calendar"></i>
-								<div class="details">
-									<span class="big">{{ date('d F Y') }}</span>
-									<span>{{ date('l') }}</span>
-								</div>
-							</li>
-						</ul>
-					</div>
-				</div>
-				<div class="breadcrumbs">
-					<ul>
+<div class="page-container row-fluid">
+	<!-- BEGIN SIDEBAR -->
+	@include('keuangan.sidebar')
+	<!-- END SIDEBAR -->
+	<!-- BEGIN PAGE -->
+	<div class="page-content">
+		<div class="container-fluid">
+			<!-- BEGIN PAGE HEADER-->
+			<div class="row-fluid">
+				<div class="span12">	
+					<!-- BEGIN PAGE TITLE & BREADCRUMB-->		
+					<h3 class="page-title">
+						Home
+						<small></small>
+					</h3>
+					<ul class="breadcrumb">
 						<li>
-							<a href="#">Home</a>
+							<i class="icon-home"></i>
+							<a href="index.html">Home</a> 
 						</li>
-						
 					</ul>
-					<div class="close-bread">
-						<a href="#"><i class="icon-remove"></i></a>
-					</div>
+					<!-- END PAGE TITLE & BREADCRUMB-->
 				</div>
-				<div class="row-fluid">
-					<div class="span12">
-						
+			</div>
+			<!-- END PAGE HEADER-->
+			<!-- BEGIN PAGE CONTENT-->				
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="row-fluid page-404">
+						<div class="span5 number">
+							<img src="{{ URL::asset('images/logo.png') }}" width="180px">
+						</div>
+						<div class="span7 details">
+							<h3>Selamat Datang</h3>
+							<p>
+								Dalam Sistem Informasi <br />
+								Pelayanan Umroh dan Haji Online di
+							</p>
+							<h3>KBIH AL KARIMIYAH</h3>
+						</div>
 					</div>
 				</div>
 			</div>
+			<!-- END PAGE CONTENT-->
 		</div>
+	<!-- END PAGE CONTAINER-->			
 	</div>
+	<!-- BEGIN PAGE -->	 	
+</div>
 @stop

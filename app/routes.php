@@ -11,229 +11,197 @@
 |
 */
 
-// App::missing(function($exception)
-//     {
-
-//         // shows an error page (app/views/error.blade.php)
-//         // returns a page not found error
-//         //return View::make('notfound');
-//         return Redirect::to('/');
-//     });
-
-
 Route::get('/', 'defaultview\DashboardController@index');
+Route::get('updatenotification', 'defaultview\DashboardController@notification');
 
-Route::resource('job-vacancy', 'defaultview\JobController');
+//Route::get('register', 'LoginController@register');
 
-Route::get('about', 'defaultview\AboutController@index');
-Route::get('contact', 'defaultview\ContactController@index');
+Route::get('register/{value}', 'LoginController@register');
+Route::get('cetak-haji/{value}/{id}', 'LoginController@cetakHaji');
+Route::get('cetak-umroh/{value}/{id}', 'LoginController@cetakUmroh');
+Route::get('login-page', 'LoginController@loginPage');
 
-Route::get('register', 'defaultview\RegisterController@index');
-Route::post('do-register', 'defaultview\RegisterController@do_register');
+Route::post('do-register', 'LoginController@do_register');
+Route::post('do-register-haji', 'LoginController@doRegisterHaji');
+Route::post('do-register-umroh', 'LoginController@doRegisterUmroh');
 
-Route::get('myprofile', 'defaultview\RegisterController@updateProfil');
-Route::post('updatemyprofile', 'defaultview\RegisterController@storeUpdate');
 
-Route::get('updatenotification', 'defaultview\RegisterController@notification');
+Route::get('my-profile', 'LoginController@myProfile');
+Route::post('update-profile', 'LoginController@updateProfile');
+Route::post('update-password', 'LoginController@updatePassword');
 
+Route::get('genericmaster/{value}', 'defaultview\DashboardController@getGeneric');
+
+Route::get('informasi/{id}', 'defaultview\InformasiController@show');
 
 Route::get('login', function(){
     if (Session::has('user')) {
         Auth::login(Session::get('user'));
-        return Auth::user()->idjabatan;
+        return Redirect::to('/');
     }else{
         return Redirect::to('/');
     }
-			
 });
-Route::get('official', function(){
-	if (Session::has('user')) {
-		return Redirect::to('/');
-	}else{
-		return View::make('login');
-	}
-});
+
 Route::post('do', 'LoginController@login');
 Route::get('logout', 'LoginController@logout');
 
-
-Route::filter('hakHrdStaff', function(){
-    if ((Auth::user()->idjabatan != '1')){
+Route::filter('hakStaff', function(){
+    if ((Auth::user()->idusertype != '1')){
         return Redirect::to('/');
     }
 });
-Route::filter('hakHrdManager', function(){
-    if ((Auth::user()->idjabatan != '2')){
+Route::filter('hakJamaah', function(){
+    if ((Auth::user()->idusertype != '2')){
         return Redirect::to('/');
     }
 });
-Route::filter('hakDirektur', function(){
-    if ((Auth::user()->idjabatan != '3')){
+Route::filter('hakKetua', function(){
+    if ((Auth::user()->idusertype != '3')){
         return Redirect::to('/');
     }
 });
-Route::filter('hakHrga', function(){
-    if ((Auth::user()->idjabatan != '4')){
+Route::filter('hakFrontOffice', function(){
+    if ((Auth::user()->idusertype != '4')){
+        return Redirect::to('/');
+    }
+});
+Route::filter('hakKepalaSekretariat', function(){
+    if ((Auth::user()->idusertype != '5')){
         return Redirect::to('/');
     }
 });
 Route::filter('hakKeuangan', function(){
-    if ((Auth::user()->idjabatan != '5')){
-        return Redirect::to('/');
-    }
-});
-Route::filter('hakKaryawan', function(){
-    if ((Auth::user()->idjabatan != '6')){
-        return Redirect::to('/');
-    }
-});
-Route::filter('hakPelamar', function(){
-    if ((Auth::user()->idjabatan != '7')){
+    if ((Auth::user()->idusertype != '6')){
         return Redirect::to('/');
     }
 });
 
-Route::group(['prefix' => 'hrdstaff', 'before' => 'auth|hakHrdStaff'], function() {
+Route::group(['prefix' => 'staff', 'before' => 'auth|hakStaff'], function() {
 
-    Route::resource('/', 'hrdstaff\DashboardController');
-    Route::resource('agama', 'hrdstaff\AgamaController');
-
-    Route::resource('karyawan', 'hrdstaff\KaryawanController');
-    Route::get('karyawan/delete/{id}', 'hrdstaff\KaryawanController@destroy');
-
-    Route::resource('pelatihan', 'hrdstaff\PelatihanController');
-    Route::get('pelatihan/delete/{id}', 'hrdstaff\PelatihanController@destroy');
-
-    Route::resource('peserta-pelatihan', 'hrdstaff\PesertaPelatihanController');
-
-    Route::get('agama/delete/{id}', 'hrdstaff\AgamaController@destroy');
-
-    Route::resource('department', 'hrdstaff\DepartmentController');
-    Route::get('department/delete/{id}', 'hrdstaff\DepartmentController@destroy');
-
-    Route::resource('job-vacancy', 'hrdstaff\JobvacancyController');
-    Route::get('job-vacancy/delete/{id}', 'hrdstaff\JobVacancyController@destroy');
-
-    Route::resource('pengunduran-diri', 'hrdstaff\PengunduranDiriController');
-    Route::get('pengunduran-diri/{id}/approve', 'hrdstaff\PengunduranDiriController@approve');
-    Route::resource('contact-us', 'hrdstaff\ContactUsController');
-
-    Route::resource('cuti', 'hrdstaff\CutiController');
-    Route::get('approve-cuti/{id}', 'hrdstaff\CutiController@approveCuti');
-    Route::get('unapprove-cuti/{id}', 'hrdstaff\CutiController@unapproveCuti');
-
-    Route::resource('setting-cuti', 'hrdstaff\SettingCutiController');
-
-    Route::get('lamaran', 'hrdstaff\LamaranController@index');
-    Route::get('lamaran/{id}/edit', 'hrdstaff\LamaranController@edit');
-    Route::get('list-lamaran/{id}', 'hrdstaff\LamaranController@listLamaran');
-    Route::post('terima-lamaran', 'hrdstaff\LamaranController@terimaLamaran');
-    Route::get('tolak-lamaran/{id}', 'hrdstaff\LamaranController@tolakLamaran');
-    Route::get('detail-lamaran/{id}', 'hrdstaff\LamaranController@detailLamaran');
-    //Route::get('job-vacancy/delete/{id}', 'hrdstaff\JobVacancyController@destroy');
+    Route::resource('/', 'Staff\DashboardController');
     
+    Route::resource('jamaah', 'Staff\JamaahController');
+    Route::get('jamaah/delete/{id}', 'Staff\JamaahController@destroy');
+    Route::get('jamaah/cetak/{id}', 'Staff\JamaahController@cetak');
+
+    Route::resource('haji', 'Staff\LayananHajiController');
+    Route::get('haji/delete/{id}', 'Staff\LayananHajiController@destroy');
+    Route::resource('umroh', 'Staff\LayananUmrohController');
+    Route::get('umroh/delete/{id}', 'Staff\LayananUmrohController@destroy');
+
+    Route::resource('pembayaran', 'Staff\PembayaranController');
+    Route::get('pembayaran/cetak/{id}', 'Staff\PembayaranController@cetak');
+    Route::get('pembayaran/delete/{id}', 'Staff\PembayaranController@destroy');
+    
+    Route::resource('keuangan', 'Staff\PengeluaranController');
+    Route::get('keuangan/delete/{id}', 'Staff\PengeluaranController@destroy');
+
+    Route::resource('cek-kesehatan', 'Staff\CekKesehatanController');
+    Route::get('cek-kesehatan/delete/{id}', 'Staff\CekKesehatanController@destroy');
+    Route::get('cek-kesehatan/{id}/addjamaah', 'Staff\CekKesehatanController@listJamaah');
+    Route::post('cek-kesehatan-jamaah', 'Staff\CekKesehatanController@addJamaah');
+    Route::get('cek-kesehatan-jamaah/delete/{id}', 'Staff\CekKesehatanController@hapusJamaah');
+
+    Route::resource('bimbingan', 'Staff\BimbinganController');
+    Route::get('bimbingan/delete/{id}', 'Staff\BimbinganController@destroy');
+    Route::post('bimbingan-jamaah', 'Staff\BimbinganController@addJamaah');
+    Route::get('bimbingan-jamaah/delete/{id}', 'Staff\BimbinganController@hapusJamaah');
+    Route::get('peserta-jamaah/delete/{id}', 'Staff\BimbinganController@hapusPeserta');
+    Route::post('adddetailbimbingan-jamaah', 'Staff\BimbinganController@addDetailBimbinganJamaah');
+
+    Route::resource('passport', 'Staff\PassportController');
+    Route::get('passport/delete/{id}', 'Staff\PassportController@destroy');
+    Route::get('passport/{id}/addjamaah', 'Staff\PassportController@listJamaah');
+    Route::post('passport-jamaah', 'Staff\PassportController@addJamaah');
+    Route::get('passport-jamaah/delete/{id}', 'Staff\PassportController@hapusJamaah');
+
+    Route::resource('chat', 'Staff\ChatController');
+
+    // ------------ INFORMASI PAGES ------------ //
+
+    // Profil
+    Route::resource('informasi', 'Staff\InformasiController');
+
 });
-Route::group(['prefix' => 'hrdmanager', 'before' => 'auth|hakHrdManager'], function() {
 
-    Route::resource('/', 'hrdmanager\DashboardController');
+Route::group(['prefix' => 'jamaah', 'before' => 'auth|hakJamaah'], function() {
 
-    Route::resource('pelatihan', 'hrdmanager\PelatihanController');
-    Route::get('pelatihan/delete/{id}', 'hrdmanager\PelatihanController@destroy');
-    Route::get('approve-pelatihan/{id}', 'hrdmanager\PelatihanController@approve');
-    Route::get('unapprove-pelatihan/{id}', 'hrdmanager\PelatihanController@unapprove');
-    Route::get('notapprove-pelatihan/{id}', 'hrdmanager\PelatihanController@notapprove');
+    Route::resource('/', 'Jamaah\DashboardController');
 
-    Route::resource('pengunduran-diri', 'hrdmanager\PengunduranDiriController');
-    Route::get('pengunduran-diri/{id}/approve', 'hrdmanager\PengunduranDiriController@approve');
-    Route::get('pengunduran-diri/{id}/unapprove', 'hrdmanager\PengunduranDiriController@unapprove');
+    Route::get('informasi/{id}', 'Jamaah\InformasiController@show');
 
-    Route::get('approve-cuti/{id}', 'hrdmanager\CutiController@approveCuti');
-    Route::get('unapprove-cuti/{id}', 'hrdmanager\CutiController@unapproveCuti');
+    Route::resource('my-profile', 'Jamaah\ProfileController');
+    Route::resource('konfirmasi', 'Jamaah\KonfirmasiController');
+    Route::post('konfirmasi-cicilan', 'Jamaah\KonfirmasiController@store');
+
+    Route::resource('passport', 'Jamaah\PassportController');
+    Route::get('passport/cetak/{id}', 'Jamaah\PassportController@cetakSurat');
     
-    Route::resource('cuti', 'hrdmanager\CutiController');
-    Route::get('approve-cuti/{id}', 'hrdmanager\CutiController@approveCuti');
+    Route::resource('haji', 'Jamaah\HajiController');
+    Route::resource('umroh', 'Jamaah\UmrohController');
+    Route::resource('pesan', 'Jamaah\PesanController');
+    Route::resource('bimbingan', 'Jamaah\BimbinganController');
+    Route::resource('cekkesehatan', 'Jamaah\CekKesehatanController');
+    Route::get('cekkesehatan/cetak/{id}', 'Jamaah\CekKesehatanController@cetakSurat');
 
-    Route::resource('absensi', 'hrdmanager\AbsensiController');
-    Route::post('absensi-karyawan/accept', 'hrdmanager\AbsensiController@approveAbsensi');
-    
+    Route::resource('chat', 'Jamaah\ChatController');
+
 });
-Route::group(['prefix' => 'direktur', 'before' => 'auth|hakDirektur'], function() {
 
-    Route::resource('/', 'direktur\DashboardController');
-    Route::get('cetak', 'direktur\DashboardController@getPdf');
+Route::group(['prefix' => 'ketua', 'before' => 'auth|hakKetua'], function() {
 
-    Route::resource('cuti', 'direktur\CutiController');
-    Route::get('cetak-cuti/{id}', 'direktur\CutiController@cetakCuti');
+    Route::get('/', 'Ketua\DashboardController@index');
 
-    Route::resource('pelatihan', 'direktur\PelatihanController');
-    Route::get('cetak-pelatihan/{id}', 'direktur\PelatihanController@cetakPelatihan');
+    Route::resource('user', 'Ketua\UserController');
+    Route::get('user/delete/{id}', 'Ketua\UserController@destroy');
 
-    Route::resource('pengunduran-diri', 'direktur\PengunduranDiriController');
-    Route::get('cetak-pengunduran-diri/{id}', 'direktur\PengunduranDiriController@cetakPengunduranDiri');
+    Route::get('jamaah/{id}', 'Ketua\JamaahController@show');
+    Route::get('validasi-jamaah', 'Ketua\JamaahController@valid');
+    Route::get('validasi-jamaah/{valid}/{id}', 'Ketua\JamaahController@validasi');
 
-    Route::resource('absensi', 'direktur\AbsensiController');
-    Route::resource('penggajian', 'direktur\PenggajianController');
-    
+    Route::get('laporan/{value}', 'ketua\LaporanController@show');
+    Route::get('laporan/{value}/{tahun}', 'ketua\LaporanController@showYear');
+
+    Route::get('laporan/print/{value}/{id}', 'ketua\LaporanController@cetakDetail');
+    Route::get('laporan/all/print/all/{value}', 'ketua\LaporanController@cetakAll');
+
+    Route::resource('chat', 'Ketua\ChatController');
+    Route::resource('keuangan', 'Ketua\KeuanganController');
+
 });
-Route::group(['prefix' => 'hrga', 'before' => 'auth|hakHrga'], function() {
 
-    Route::resource('/', 'hrga\DashboardController');
-    
+Route::group(['prefix' => 'front-office', 'before' => 'auth|hakFrontOffice'], function() {
+
+    Route::get('/', 'FrontOffice\DashboardController@index');
+    Route::resource('chat', 'FrontOffice\ChatController');
+
 });
+
+Route::group(['prefix' => 'kepala-sekretariat', 'before' => 'auth|hakKepalaSekretariat'], function() {
+
+    Route::get('/', 'KepalaSekretariat\DashboardController@index');
+    Route::resource('chat', 'KepalaSekretariat\ChatController');
+
+});
+
 Route::group(['prefix' => 'keuangan', 'before' => 'auth|hakKeuangan'], function() {
 
-    Route::resource('/', 'keuangan\DashboardController');
+    Route::get('/', 'Keuangan\DashboardController@index');
 
-    Route::resource('pelatihan', 'keuangan\PelatihanController');
-    Route::get('pelatihan/delete/{id}', 'keuangan\PelatihanController@destroy');
-    Route::get('approve-pelatihan/{id}', 'keuangan\PelatihanController@approve');
-    Route::get('unapprove-pelatihan/{id}', 'keuangan\PelatihanController@unapprove');
+    Route::get('validasi-pembayaran/{id}', 'Keuangan\PembayaranController@show');
+    Route::get('validasi-pembayaran', 'Keuangan\PembayaranController@valid');
+    Route::get('validasi-pembayaran/{valid}/{id}/{val}', 'Keuangan\PembayaranController@validasi');
 
-    Route::resource('penggajian', 'keuangan\PenggajianController');
-    
+    Route::resource('chat', 'Keuangan\ChatController');
+
+    Route::resource('pembayaran-bimbingan', 'Keuangan\PembayaranBimbinganController');
+    Route::get('pembayaran-bimbingan/cetak/{id}', 'Keuangan\PembayaranBimbinganController@cetak');
+    Route::get('pembayaran-bimbingan/delete/{id}', 'Keuangan\PembayaranBimbinganController@destroy');
+
+    Route::resource('laporan', 'Keuangan\KeuanganController');
+
 });
-Route::group(['prefix' => 'karyawan', 'before' => 'auth|hakKaryawan'], function() {
 
-    Route::resource('/', 'karyawan\DashboardController');
 
-    Route::resource('pelatihan', 'karyawan\PelatihanController');
-    Route::get('ikut-pelatihan/{id}', 'karyawan\PelatihanController@ikut');
-    Route::get('list-pelatihan', 'karyawan\PelatihanController@daftarikut');
-    Route::get('ikut-pelatihan/delete/{id}', 'karyawan\PelatihanController@destroypeserta');
 
-    Route::resource('cuti', 'karyawan\CutiController');
-    Route::get('cuti/delete/{id}', 'karyawan\CutiController@destroy');
-
-    Route::resource('pengunduran-diri', 'karyawan\PengunduranDiriController');
-    Route::get('pengunduran-diri/delete/{id}', 'karyawan\PengunduranDiriController@destroy');
-    
-});
-Route::group(['prefix' => '/', 'before' => 'auth|hakPelamar'], function() {
-
-    Route::resource('resume', 'pelamar\ResumeController');
-
-    Route::resource('application', 'pelamar\ApplicationController');
-
-    Route::resource('pendidikan', 'pelamar\PendidikanController');
-    Route::get('pendidikan/delete/{id}', 'pelamar\PendidikanController@destroy');
-
-    Route::resource('bahasa', 'pelamar\BahasaController');
-    Route::get('bahasa/delete/{id}', 'pelamar\BahasaController@destroy');
-
-    Route::resource('keluarga', 'pelamar\KeluargaController'); 
-    Route::get('anak/delete/{id}', 'pelamar\KeluargaController@destroy');
-
-    Route::resource('referensi', 'pelamar\ReferensiController');
-    Route::get('referensi/delete/{id}', 'pelamar\ReferensiController@destroy');
-
-    Route::resource('kursus-pelatihan', 'pelamar\KursusPelatihanController');
-    Route::get('kursus-pelatihan/delete/{id}', 'pelamar\KursusPelatihanController@destroy');
-
-    Route::resource('pengalaman-kerja', 'pelamar\KerjaController');
-    Route::get('pengalaman-kerja/delete/{id}', 'pelamar\KerjaController@destroy');
-
-    Route::resource('pertanyaan', 'pelamar\PertanyaanController');
-    //Route::get('pengalaman-kerja/delete/{id}', 'pelamar\KerjaController@destroy');
-
-    
-});

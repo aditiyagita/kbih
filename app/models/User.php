@@ -13,7 +13,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	protected $primaryKey = 'iduser';
 	protected $table = 'users';
 	public $timestamps = false; 
-	protected $fillable  = array('nama_lengkap','nama_panggilan','alamat','kode_pos','no_telp','no_hp','tempat_lahir','tanggal_lahir','warga_negara','no_ktp','no_passport','idjabatan','agama','jenis_kelamin','berat_badan','tinggi_badan','status_kawin', 'foto', 'kacamata', 'username', 'password');
+	protected $fillable  = array('username', 'password', 'idusertype', 'email');
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -27,87 +27,45 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         'upw' => 'required|min:3'
     );
 
-    public static $rulesimages = array(
-        'image' => 'image|max:2000|mimes:jpg,jpeg'
+    public static $rules = array(
+        'username' => 'required|min:3',
+        'password' => 'required|min:3',
+        'email' => 'required|email'
     );
 
-    public function jabatan()
+    public function jamaah()
 	{
-	    return $this->belongsTo('Jabatan', 'idjabatan');
+	    return $this->hasOne('Jamaah', 'iduser');
 	}
 
-    public function pendidikan()
+	public function pegawai()
 	{
-	    return $this->hasMany('Pendidikan', 'iduser');
-	}
-	public function jawaban()
-	{
-	    return $this->hasMany('Jawaban', 'iduser');
-	}
-	public function referensi()
-	{
-	    return $this->hasMany('Referensi', 'iduser');
-	}
-	public function bahasa()
-	{
-	    return $this->hasMany('Bahasa', 'iduser');
-	}
-	public function keluarga()
-	{
-	    return $this->hasOne('Keluarga', 'iduser');
-	}
-	public function karyawan()
-	{
-	    return $this->hasOne('Karyawan', 'iduser');
-	}
-	public function kursuspelatihan()
-	{
-	    return $this->hasMany('KursusPelatihan', 'iduser');
-	}
-	public function lamaran()
-	{
-	    return $this->hasMany('Lamaran', 'iduser');
-	}
-	public function pengalamankerja()
-	{
-	    return $this->hasMany('PengalamanKerja', 'iduser');
+	    return $this->hasOne('Pegawai', 'iduser');
 	}
 
-    public function register($input) {
-        //$id_siswa = DB::getPdo()->lastInsertId();
-        //$passwords = ;
+	public function usertype()
+	{
+	    return $this->belongsTo('UserType', 'idusertype');
+	}
 
-	    if($input['kewarganegaraan'] == 1){
-	        $this->warga_negara = "Indonesia";
-	        $this->no_ktp = $input['noktp'];
-	    }else{
-	    	$this->warga_negara = $input['warganegara'];
-	    	$this->no_passport = $input['nopassport'];
-	    }
-        $password = Hash::make($input['password']);
-        $this->username = $input['username']; //$input['username'];
-        $this->password = $password;
-        $this->email = $input['email'];//$input['email'];
-        $this->idjabatan = $input['jabatan'];
-        $this->agama = $input['agama'];
-        $this->nama_lengkap = $input['nama_lengkap'];
-        $this->nama_panggilan = $input['nama_panggilan'];
-        $this->alamat = $input['alamat'];
-        $this->kode_pos = $input['kode_pos'];
-        $this->no_telp = $input['no_telp'];
-        $this->no_hp = $input['no_hp'];
-        $this->tempat_lahir = $input['tempat_lahir'];
-        $this->tanggal_lahir = date('Y-m-d', strtotime($input['tanggal_lahir']));
-        $this->jenis_kelamin = $input['jenis_kelamin'];
-        $this->berat_badan = $input['berat_badan'];
-        $this->tinggi_badan = $input['tinggi_badan'];
-        $this->foto = '';
-        $this->status_kawin = $input['status_kawin'];
-        $this->kacamata = $input['kacamata'];
+	public function credentialCheck($value)
+	{
+		$getCount = DB::select(" call getStatusActive ('".$value['username']."') ");
+		$result = count($getCount) > 0 ? true : false;
+		
+		return $result;
+	}
+	
+	public function register($input) {
 
-        if($this->save()){
-        	return $this->iduser;
-        }
+        $this->username = $input['username'];
+        $this->password = (Hash::make($input['password']));
+        $this->email 	= $input['email'];
+        $this->idusertype = $input['idusertype'];
+        $this->save();
+        $id = $this->iduser;
+
+        return $id;
     }
 
     public function getDataUser($id = null){
@@ -116,6 +74,21 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         }else{
             return self::all();
         }
+	}
+
+	public function getDataUserByUsername($value)
+	{
+		return self::where('username', '=', $value)->first();
+	}
+
+	public function usernameSama($value)
+	{
+		$cek = self::whereRaw('username = ? OR email = ?', array($value['username'], $value['email']))->get();
+		if(count($cek) > 0){
+			return false;
+		}else{
+			return true;
+		}
 	}
 
 	public function apdet($input){

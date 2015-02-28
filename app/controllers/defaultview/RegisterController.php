@@ -1,6 +1,8 @@
 <?php namespace Defaultview;
 
-use BaseController, View, Session, Auth, Redirect, Hash, Input, \User, JobVacancy, Department, Keluarga, Validator, Cuti, Karyawan, Pelatihan, Notifikasi;
+use BaseController, View, Session, Auth, Redirect, Hash, Input;
+
+use User, JobVacancy, Department, Keluarga, Validator, Cuti, Karyawan, Pelatihan, Notifikasi, Pelamar;
 
 class RegisterController extends BaseController {
 
@@ -10,12 +12,13 @@ class RegisterController extends BaseController {
     			array('menu' => 'Home',
                       'link' => '/'
                       ),
-    			array('menu' => 'Info Lowongan',
+    			array('menu' => 'Lowongan Kerja',
                       'link' => 'job-vacancy'
                       ),
     		);
     	$this->tanda = $this->tanda = array('', '', '', '');
       $this->user = new User();
+      $this->pelamar = new Pelamar();
       $this->jobvacancy = new JobVacancy();
       $this->department = new Department();
       $this->keluarga = new Keluarga();
@@ -36,40 +39,6 @@ class RegisterController extends BaseController {
       $data['jobwidget'] = $this->jobvacancy->getWidget();
       return View::make('pelamar.register')
               ->with('data', $data);
-  }
-
-  public function do_register(){
-      $input = Input::all();
-      $input['berat_badan'] = '';
-      $input['tinggi_badan'] = '';
-      $input['jabatan'] = 7;
-      $id = $this->user->register($input);
-      $input['suamiistri']  = '';
-      $input['umur'] = '';
-      $input['pekerjaan'] ='';
-      $input['iduser'] = $id;
-      $this->keluarga->simpan($input);
-      Session::flash('success', 'Berhasil Register');
-      return Redirect::back();
-  }
-
-  public function register(){
-        return View::make('pelamar.register');
-  }
-
-  public function updateProfil()
-  {
-      $data['menu']       = $this->menu;
-      $data['tanda']      = $this->tanda;
-      $data['title']      = 'JC & K - My Profile';
-      $data['bulan']      = array('Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember');
-      $data['statuskawin']= array('Belum Kawin', 'Kawin', 'Janda', 'Duda');
-      $data['user']       = $this->user->getDataUser(Auth::user()->iduser);
-      $data['agama']      = array('Islam', 'Kristen Protestan', 'Kristen Katholik', 'Hindu', 'Budha');
-      $data['jobwidget']  = $this->jobvacancy->getWidget();
-      $data['department'] = $this->department->getDataDepartment();
-      return View::make('default.index')
-                  ->with('data', $data);
   }
 
   public function storeUpdate()
@@ -101,7 +70,7 @@ class RegisterController extends BaseController {
             $upload_success = Input::file('imagefile')->move($directory, $filename); 
                
             if( $upload_success ) {
-                $input['foto'] = $filename;
+                $updatekaryawan['foto']          = $filename;
             } 
       }
       
@@ -110,7 +79,39 @@ class RegisterController extends BaseController {
     $input['iduser'] = Auth::user()->iduser;
     $tanggal = date('Y-m-d', strtotime($input['tanggal_lahir']));
     $input['tanggal_lahir'] = $tanggal;
-    $apdet = $this->user->apdet($input);
+    if($input['password'] == ''){
+      $input['password'] = Auth::user()->password;
+    }else{
+      $input['password'] = Hash::make($input['password']);
+    }
+    $updateuser['username'] = $input['username'];
+    $updateuser['password'] = $input['password'];
+    $updateuser['iduser']   = $input['iduser'];
+    $apdet = $this->user->apdet($updateuser);
+
+    $updatekaryawan['agama']          = $input['agama'];
+    $updatekaryawan['status_kawin']   = $input['status_kawin'];
+    $updatekaryawan['kacamata']       = $input['kacamata'];
+    $updatekaryawan['nama_lengkap']   = $input['nama_lengkap'];
+    $updatekaryawan['nama_panggilan'] = $input['nama_panggilan'];
+    $updatekaryawan['alamat']         = $input['alamat'];
+    $updatekaryawan['kode_pos']       = $input['kode_pos'];
+    if($input['warga_negara'] == "Indonesia"){
+      $updatekaryawan['no_ktp']        = $input['no_ktp'];
+    }else{
+      $updatekaryawan['no_passport']        = $input['no_passport'];
+    }
+    //$updatekaryawan['no_telp']        = $input['no_telp'];
+    $updatekaryawan['no_hp']          = $input['no_hp'];
+    $updatekaryawan['tempat_lahir']   = $input['tempat_lahir'];
+    $updatekaryawan['tanggal_lahir']  = date('Y-m-d', strtotime($input['tanggal_lahir']));
+    $updatekaryawan['jenis_kelamin']  = $input['jenis_kelamin'];
+    $updatekaryawan['berat_badan']    = $input['berat_badan'];
+    $updatekaryawan['tinggi_badan']   = $input['tinggi_badan'];
+    $updatekaryawan['nokaryawan']     = $input['nokaryawan'];
+
+    $apdetkaryawan = $this->karyawan->apdet($updatekaryawan);
+
     return Redirect::back()->withErrors('Update Profil Berhasil');  
   }
 

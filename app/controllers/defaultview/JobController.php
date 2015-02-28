@@ -1,6 +1,6 @@
 <?php namespace Defaultview;
 
-use BaseController, View, Session, Auth, Redirect, Hash, JobVacancy, Department, Input, Lamaran, User;
+use BaseController, View, Session, Auth, Redirect, Hash, JobVacancy, Department, Input, Lamaran, User, Pelamar;
 
 class JobController extends BaseController {
 
@@ -20,6 +20,7 @@ class JobController extends BaseController {
       $this->department   = new Department();
       $this->user         = new User();
       $this->lamaran      = new Lamaran();
+      $this->pelamar      = new Pelamar();
 
 	}
 
@@ -27,7 +28,7 @@ class JobController extends BaseController {
       $data['menu']       = $this->menu;
       $data['tanda']      = $this->tanda;
       $data['title']      = $this->title = "JC & K Advertising - Lowongan Kerja";
-      $data['jobvacancy'] = $this->jobvacancy->getWidget();
+      $data['jobvacancy'] = $this->jobvacancy->getDataJobVacancy();
       $data['department'] = $this->department->getDataDepartment();
       $data['jobwidget']  = $this->jobvacancy->getWidget();
       return View::make('pelamar.jobvacancy.index')
@@ -53,8 +54,8 @@ class JobController extends BaseController {
 
   public function store(){
     $input                = Input::all();
-    $iduser               = Auth::user()->iduser;
-    $cekk                 = $this->user->getDataUser($iduser);
+    $idpelamar            = Auth::user()->pelamar->idpelamar;
+    $cekk                 = $this->pelamar->getDataPelamar($idpelamar);
     $cektinggi            = $cekk->tinggi_badan;
     $cekberat             = $cekk->berat_badan;
 
