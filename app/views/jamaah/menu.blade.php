@@ -48,8 +48,8 @@ $total = count($notifikasi);
 						<li>
 							<a href="{{ URL::asset($n->url) }}">
 								<span class="label label-success"><i class="icon-plus"></i></span>
-								{{ $n->type }}
-								<span class="time">{{ $n->uraian }}</span>
+								{{ $n->uraian }}
+								<span class="time">Pada Tanggal {{ $n->tanggal }}</span>
 							</a>
 						</li>
 						@endforeach

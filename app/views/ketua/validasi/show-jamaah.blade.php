@@ -103,9 +103,10 @@ function hapusAction(data){
                             <table class="table table-striped" id="sample_3">
                                 <body>
                                     <tr>
-                                        <td class="hidden-phone" width="20%"><strong>No. KTP</strong></td>
+                                        <td class="hidden-phone" width="20%" rowspan="5"><img src="{{ URL::asset('images/user/'.$data['jamaah']->foto) }}"></td>
+                                        <td class="hidden-phone" width="10%"><strong>No. KTP</strong></td>
                                         <td class="hidden-phone" width="20%">{{ $data['jamaah']->no_ktp }}</td>
-                                        <td class="hidden-phone" width="20%"><strong>Propinsi</strong></td>
+                                        <td class="hidden-phone" width="10%"><strong>Propinsi</strong></td>
                                         <td class="hidden-phone" width="20%">{{ $data['jamaah']->propinsi }}</td>
                                     </tr>
                                     <tr>
@@ -136,10 +137,10 @@ function hapusAction(data){
                                     <tr>
                                         <td class="hidden-phone"><strong>Umur</strong></td>
                                         <td class="hidden-phone">{{ $data['jamaah']->umur }}</td>
-                                        <td class="hidden-phone"></td>
-                                        <td class="hidden-phone"></td>
+                                        <td class="hidden-phone" colspan=2><strong>Scan KTP</strong></td>
                                     </tr>
                                     <tr>
+                                        <td class="hidden-phone"></td>
                                         <td class="hidden-phone"><strong>Jenis Kelamin</strong></td>
                                         <td class="hidden-phone">
                                             @foreach ( $data['generic'] as $jk )
@@ -149,23 +150,20 @@ function hapusAction(data){
                                             @endif
                                             @endforeach
                                         </td>
-                                        <td class="hidden-phone"></td>
-                                        <td class="hidden-phone"></td>
+                                        <td class="hidden-phone" colspan=2 rowspan=3><img src="{{ URL::asset('images/ktp/'.$data['jamaah']->scanktp) }}"></td>
                                     </tr>
                                     <tr>
+                                        <td class="hidden-phone"></td>
                                         <td class="hidden-phone"><strong>Pendidikan</strong></td>
                                         <td class="hidden-phone">{{ $data['jamaah']->pendidikan }}</td>
-                                        <td class="hidden-phone"></td>
-                                        <td class="hidden-phone"></td>
                                     </tr>
                                     <tr>
+                                        <td class="hidden-phone"></td>
                                         <td class="hidden-phone"><strong>Pekerjaan</strong></td>
                                         <td class="hidden-phone">{{ $data['jamaah']->pekerjaan }}</td>
-                                        <td class="hidden-phone"></td>
-                                        <td class="hidden-phone">    
-                                        </td>
                                     </tr>
                                     <tr>
+                                        <td class="hidden-phone"></td>
                                         <td class="hidden-phone"><strong>Warga Negara</strong></td>
                                         <td class="hidden-phone">
                                             @foreach ( $data['generic'] as $wn )
@@ -175,28 +173,26 @@ function hapusAction(data){
                                             @endif
                                             @endforeach
                                         </td>
-                                        <td class="hidden-phone"></td>
-                                        <td class="hidden-phone"></td>
+                                        <td class="hidden-phone" colspan=2><strong>Scan SPPH (Jamaah Haji)</strong></td>
                                     </tr>
                                     <tr>
+                                        <td class="hidden-phone"></td>
                                         <td class="hidden-phone"><strong>Alamat</strong></td>
                                         <td class="hidden-phone">{{ $data['jamaah']->alamat }}</td>
-                                        <td class="hidden-phone"></td>
-                                        <td class="hidden-phone"></td>
+                                        <td class="hidden-phone" colspan=2 rowspan=3><img src="{{ URL::asset('images/ktp/'.$data['jamaah']->scanktp) }}"></td>
                                     </tr>
                                     <tr>
+                                        <td class="hidden-phone"></td>
                                         <td class="hidden-phone"><strong>Kelurahan</strong></td>
                                         <td class="hidden-phone">{{ $data['jamaah']->kelurahan }}</td>
-                                        <td class="hidden-phone"></td>
-                                        <td class="hidden-phone"></td>
                                     </tr>
                                     <tr>
+                                        <td class="hidden-phone"></td>
                                         <td class="hidden-phone"><strong>Kecamatan</strong></td>
                                         <td class="hidden-phone">{{ $data['jamaah']->kecamatan }}</td>
-                                        <td class="hidden-phone"></td>
-                                        <td class="hidden-phone"></td>
                                     </tr>
                                     <tr>
+                                        <td class="hidden-phone"></td>
                                         <td class="hidden-phone"><strong>Kabupaten</strong></td>
                                         <td class="hidden-phone">{{ $data['jamaah']->kabupaten }}</td>
                                         <td class="hidden-phone"></td>

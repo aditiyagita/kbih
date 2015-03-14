@@ -104,6 +104,7 @@
                         <tr>
                         	<th class="hidden-phone" width='1%'><input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes" /></th>
                             <th class="hidden-phone" width='10%'>No. KTP</th>
+                            <th class="hidden-phone" width='10%'>Layanan</th>
                             <th class="hidden-phone" width='80%'>Nama Jamaah</th>
                         </tr>
                     </thead>
@@ -115,6 +116,7 @@
                                 <input type="hidden" name="idtransaksi[{{ $i }}]" value="{{ $jamaah->idtransaksi }}">
                                 <input type="checkbox" class="checkboxes" name="urut[ {{ $i }} ]" value="{{ $i }}" /></td>
                             <td class="hidden-phone">{{ $jamaah->no_ktp }}</td>
+                            <td class="hidden-phone">{{ $jamaah->desc }}</td>
                             <td class="hidden-phone">{{ $jamaah->namalengkap }}</td>
                         </tr>
                         <?php $i++; ?>

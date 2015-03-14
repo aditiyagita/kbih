@@ -38,38 +38,46 @@ class Notifikasi extends Eloquent {
 		$iduser = Auth::user()->iduser;
 
 		return DB::select("
-							SELECT DISTINCT type,uraian,url FROM (
-							SELECT 
-								idbimbingan AS id,
-								'Bimbingan' AS type,
-								'Jadwal Bimbingan' AS uraian,
-								'jamaah/bimbingan' AS url
-							FROM bimbingan
-							WHERE idbimbingan NOT IN ( SELECT refid FROM notifikasi WHERE jenis = 'Bimbingan' AND iduser = '".$iduser."' )
-							
+							SELECT DISTINCT type,uraian,url, tanggal FROM (
+
+								SELECT * FROM (
+									SELECT 
+										a.idpassport AS id,
+										'Passport' AS type,
+										CASE
+											WHEN uraian = 'Pengambilan Buku Passport'
+										THEN 'Jadwal Pengambilan Buku Passport'
+										ELSE 'Jadwal Pembuatan Passport'
+										END AS uraian,
+										'jamaah/passport' AS url,
+										tanggal_pembuatan AS tanggal
+									FROM `passport` a
+									JOIN detailpassport b ON a.idpassport = b.idpassport
+									JOIN jamaah c ON b.no_ktp = c.no_ktp
+									WHERE c.iduser = '".$iduser."'
+										AND a.idpassport NOT IN ( SELECT refid FROM notifikasi WHERE jenis = 'Passport' AND iduser = '".$iduser."' )
+									ORDER BY a.idpassport DESC
+									LIMIT 0,2
+								) as z	
+
 							UNION ALL
 
-							SELECT 
-								idpassport AS id,
-								'Passport' AS type,
-								'Jadwal Pengambilan Passport' AS uraian,
-								'jamaah/passport' AS url
-							FROM `passport`
-							WHERE idpassport NOT IN ( SELECT refid FROM notifikasi WHERE jenis = 'Passport' AND iduser = '".$iduser."' )
-							
-							UNION ALL
-
-							SELECT 
-								iddetailcekkesehatan AS id,
-								'Cek Kesehatan' AS type,
-								d.jenis_pemeriksaan AS uraian,
-								'jamaah/cekkesehatan' AS url
-							FROM jamaah a 
-							JOIN transaksi b ON a.no_ktp = b.no_ktp
-							JOIN detailcekkesehatan c ON b.idtransaksi = c.idtransaksi
-							JOIN cekkesehatan d ON c.idcekkesehatan = d.idcekkesehatan
-							WHERE a.iduser = '".$iduser."' 
-								AND iddetailcekkesehatan NOT IN ( SELECT refid FROM notifikasi WHERE jenis = 'Cek Kesehatan' AND iduser = '".$iduser."' )
+								SELECT * FROM (
+									SELECT 
+										iddetailcekkesehatan AS id,
+										'Cek Kesehatan' AS type,
+										d.jenis_pemeriksaan AS uraian,
+										'jamaah/cekkesehatan' AS url,
+										tanggal_pemeriksaan AS tanggal
+									FROM jamaah a 
+									JOIN transaksi b ON a.no_ktp = b.no_ktp
+									JOIN detailcekkesehatan c ON b.idtransaksi = c.idtransaksi
+									JOIN cekkesehatan d ON c.idcekkesehatan = d.idcekkesehatan
+									WHERE a.iduser = '".$iduser."' 
+										AND iddetailcekkesehatan NOT IN ( SELECT refid FROM notifikasi WHERE jenis = 'Cek Kesehatan' AND iduser = '".$iduser."' )
+									ORDER BY iddetailcekkesehatan DESC
+									LIMIT 0,2
+								) AS a
 
 							) AS x
 						");		
@@ -80,23 +88,40 @@ class Notifikasi extends Eloquent {
 		$iduser = Auth::user()->iduser;
 
 		return DB::select("
-							SELECT 
-								idbimbingan AS id,
-								'Bimbingan' AS type,
-								'Jadwal Bimbingan' AS uraian,
-								'jamaah/bimbingan' AS url
-							FROM bimbingan
-							WHERE idbimbingan NOT IN ( SELECT refid FROM notifikasi WHERE jenis = 'Bimbingan' AND iduser = '".$iduser."' )
-							
+								SELECT * FROM (
+									SELECT 
+										a.idpassport AS id,
+										'Passport' AS type,
+										'Jadwal Pengambilan Passport' AS uraian,
+										'jamaah/passport' AS url,
+										tanggal_pembuatan AS tanggal
+									FROM `passport` a
+									JOIN detailpassport b ON a.idpassport = b.idpassport
+									JOIN jamaah c ON b.no_ktp = c.no_ktp
+									WHERE c.iduser = '".$iduser."'
+										AND a.idpassport NOT IN ( SELECT refid FROM notifikasi WHERE jenis = 'Passport' AND iduser = '".$iduser."' )
+									ORDER BY a.idpassport DESC
+									LIMIT 0,2
+								) as z		
+
 							UNION ALL
 
-							SELECT 
-								idpassport AS id,
-								'Passport' AS type,
-								'Jadwal Pengambilan Passport' AS uraian,
-								'jamaah/passport' AS url
-							FROM `passport`
-							WHERE idpassport NOT IN ( SELECT refid FROM notifikasi WHERE jenis = 'Passport' AND iduser = '".$iduser."' )
+								SELECT * FROM (
+									SELECT 
+										iddetailcekkesehatan AS id,
+										'Cek Kesehatan' AS type,
+										d.jenis_pemeriksaan AS uraian,
+										'jamaah/cekkesehatan' AS url,
+										tanggal_pemeriksaan AS tanggal
+									FROM jamaah a 
+									JOIN transaksi b ON a.no_ktp = b.no_ktp
+									JOIN detailcekkesehatan c ON b.idtransaksi = c.idtransaksi
+									JOIN cekkesehatan d ON c.idcekkesehatan = d.idcekkesehatan
+									WHERE a.iduser = '".$iduser."' 
+										AND iddetailcekkesehatan NOT IN ( SELECT refid FROM notifikasi WHERE jenis = 'Cek Kesehatan' AND iduser = '".$iduser."' )
+									ORDER BY iddetailcekkesehatan DESC
+									LIMIT 0,2
+								) AS a
 							
 						");		
 	}

@@ -73,6 +73,7 @@
 						Cek Kesehatan
 						<small>Manage Cek Kesehatan</small>
                         <a href="#myModal1" role="button" class="btn green big" data-toggle="modal" style="float:right"><i class="icon-plus-sign"></i> Add</a>
+                        <a href="#myModal2" role="button" class="btn green big" data-toggle="modal" style="float:right; margin-right:5px"><i class="icon-plus-sign"></i> Add Buku Hijau</a>
 					</h3>
 					<ul class="breadcrumb">
 						<li>
@@ -98,6 +99,7 @@
                 
             </div>
             <div class="portlet-body">
+                <h2>Data Cek Kesehatan</h2>
                 <table class="table table-striped" id="sample_3">
                     <thead>
                         <tr>
@@ -112,22 +114,63 @@
                     <tbody>
                         <?php $no = 1; ?>
                         @foreach ($data['cekkesehatan'] as $cekkesehatan)
+                            @if( $cekkesehatan->jenis_pemeriksaan != 'Pengambilan Buku Hijau' )
+                                <tr>
+                                	<td>{{ $no }}</td>
+                                    <td class="hidden-phone">{{ date("d M Y", strtotime( $cekkesehatan->tanggal_pemeriksaan ) ) }}</td>
+                                    <td class="hidden-phone">{{ $cekkesehatan->jenis_pemeriksaan }}</td>
+                                    <td class="hidden-phone">{{ $cekkesehatan->waktu_pemeriksaan_mulai }} - {{ $cekkesehatan->waktu_pemeriksaan_selesai }}</td>
+                                    <td class="hidden-phone">{{ $cekkesehatan->tempat_pemeriksaan }}</td>
+                                    <td class="hidden-phone">
+                                        <center>
+                                            <a href="{{ URL::asset('staff/cek-kesehatan/'.$cekkesehatan->idcekkesehatan.'/addjamaah') }}" class="btn mini blue icn-only editData"><i class="icon-plus-sign icon-white"></i> Add Jamaah</a>
+                                            <a href="{{ URL::asset('staff/cek-kesehatan/'.$cekkesehatan->idcekkesehatan) }}" class="btn mini yellow icn-only editData"><i class="icon-reorder icon-white"></i> Detail</a>
+                                            <a href="{{ URL::asset('staff/cek-kesehatan/'.$cekkesehatan->idcekkesehatan.'/edit') }}" class="btn mini green icn-only editData"><i class="icon-check icon-white"></i> Edit</a>
+                                            <a href="javascript:hapusAction({{ $cekkesehatan->idcekkesehatan }})" class="btn mini black"><i class="icon-trash"></i> Delete</a>
+                                        </center>
+                                    </td>
+                                </tr>
+                                <?php $no++; ?>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="portlet-body">
+                <h2>Data Pengambilan Buku Hijau</h2>
+                <table class="table table-striped" id="sample_3">
+                    <thead>
                         <tr>
-                        	<td>{{ $no }}</td>
-                            <td class="hidden-phone">{{ date("d M Y", strtotime( $cekkesehatan->tanggal_pemeriksaan ) ) }}</td>
-                            <td class="hidden-phone">{{ $cekkesehatan->jenis_pemeriksaan }}</td>
-                            <td class="hidden-phone">{{ $cekkesehatan->waktu_pemeriksaan_mulai }} - {{ $cekkesehatan->waktu_pemeriksaan_selesai }}</td>
-                            <td class="hidden-phone">{{ $cekkesehatan->tempat_pemeriksaan }}</td>
-                            <td class="hidden-phone">
-                                <center>
-                                    <a href="{{ URL::asset('staff/cek-kesehatan/'.$cekkesehatan->idcekkesehatan.'/addjamaah') }}" class="btn mini blue icn-only editData"><i class="icon-plus-sign icon-white"></i> Add Jamaah</a>
-                                    <a href="{{ URL::asset('staff/cek-kesehatan/'.$cekkesehatan->idcekkesehatan) }}" class="btn mini yellow icn-only editData"><i class="icon-reorder icon-white"></i> Detail</a>
-                                    <a href="{{ URL::asset('staff/cek-kesehatan/'.$cekkesehatan->idcekkesehatan.'/edit') }}" class="btn mini green icn-only editData"><i class="icon-check icon-white"></i> Edit</a>
-                                    <a href="javascript:hapusAction({{ $cekkesehatan->idcekkesehatan }})" class="btn mini black"><i class="icon-trash"></i> Delete</a>
-                                </center>
-                            </td>
+                            <th class="hidden-phone" width='5%'>No.</th>
+                            <th class="hidden-phone" width='10%'>Tanggal</th>
+                            <th class="hidden-phone" width='15%'>Uraian</th>
+                            <th class="hidden-phone" width='15%'>Waktu Pengambilan</th>
+                            <th class="hidden-phone" width='15%'>Tempat Pengambilan</th>
+                            <th class="hidden-phone" width='25%'></th>
                         </tr>
-                        <?php $no++; ?>
+                    </thead>
+                    <tbody>
+                        <?php $no = 1; ?>
+                        @foreach ($data['cekkesehatan'] as $cekkesehatan)
+                            @if( $cekkesehatan->jenis_pemeriksaan == 'Pengambilan Buku Hijau' )
+                                <tr>
+                                    <td>{{ $no }}</td>
+                                    <td class="hidden-phone">{{ date("d M Y", strtotime( $cekkesehatan->tanggal_pemeriksaan ) ) }}</td>
+                                    <td class="hidden-phone">{{ $cekkesehatan->jenis_pemeriksaan }}</td>
+                                    <td class="hidden-phone">{{ $cekkesehatan->waktu_pemeriksaan_mulai }} - {{ $cekkesehatan->waktu_pemeriksaan_selesai }}</td>
+                                    <td class="hidden-phone">{{ $cekkesehatan->tempat_pemeriksaan }}</td>
+                                    <td class="hidden-phone">
+                                        <center>
+                                            <a href="{{ URL::asset('staff/cek-kesehatan/'.$cekkesehatan->idcekkesehatan.'/addjamaah') }}" class="btn mini blue icn-only editData"><i class="icon-plus-sign icon-white"></i> Add Jamaah</a>
+                                            <a href="{{ URL::asset('staff/cek-kesehatan/'.$cekkesehatan->idcekkesehatan) }}" class="btn mini yellow icn-only editData"><i class="icon-reorder icon-white"></i> Detail</a>
+                                            <a href="{{ URL::asset('staff/cek-kesehatan/'.$cekkesehatan->idcekkesehatan.'/edit') }}" class="btn mini green icn-only editData"><i class="icon-check icon-white"></i> Edit</a>
+                                            <a href="javascript:hapusAction({{ $cekkesehatan->idcekkesehatan }})" class="btn mini black"><i class="icon-trash"></i> Delete</a>
+                                        </center>
+                                    </td>
+                                </tr>
+                                <?php $no++; ?>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
@@ -186,6 +229,41 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label">Tempat Pemeriksaan</label>
+                    <div class="controls">
+                        <input class="m-wrap large" type="text" name="tempat_pemeriksaan" required>
+                    </div>
+                </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                <button class="btn green">Save</button>
+            </div>
+            {{ Form::close() }}
+        </div>
+    </div>
+
+<div id="myModal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+            {{ Form::open(array('route' => 'staff.cek-kesehatan.store', 'class' => 'form-horizontal')) }}
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h3 id="myModalLabel1">Add Pengambilan Buku Hijau</h3>
+            </div>
+            <div class="modal-body">
+                    <input class="m-wrap large" type="hidden" name="jenis_pemeriksaan" value="Pengambilan Buku Hijau" required readonly>
+                <div class="control-group">
+                    <label class="control-label">Tanggal Pengambilan</label>
+                    <div class="controls">
+                        <input class="m-wrap large" type="date" name="tanggal_pemeriksaan" required>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Waktu Pengambilan</label>
+                    <div class="controls">
+                        <input class="m-wrap small inputs duration t1 time hrs" type="text" placeholder="jam:menit:detik" value="" pattern="^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$" name="waktu_pemeriksaan_mulai" required> 
+                        -<input class="m-wrap small inputs duration t1 time hrs" type="text" placeholder="jam:menit:detik" value="" pattern="^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$" name="waktu_pemeriksaan_selesai" required>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Tempat Pengambilan</label>
                     <div class="controls">
                         <input class="m-wrap large" type="text" name="tempat_pemeriksaan" required>
                     </div>

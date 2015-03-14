@@ -53,6 +53,7 @@ class Passport extends Eloquent {
 	}
 
 	public function simpan($input){
+		$this->uraian 					= $input['uraian'];
 		$this->tanggal_pembuatan 		= $input['tanggal_pembuatan'];
 		$this->waktu_pembuatan_awal 	= $input['waktu_pembuatan_awal'];
 		$this->waktu_pembuatan_akhir 	= $input['waktu_pembuatan_akhir'];

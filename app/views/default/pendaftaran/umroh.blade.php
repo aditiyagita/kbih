@@ -281,11 +281,19 @@
 							</div>
 						</div>
 
-						<h3 class="block-div">User Photo</h3>
+						<h3 class="block-div">Document Upload</h3>
 						<div class="control-group">
 							<label class="control-label">Upload Foto</label>
 							<div class="controls">
-								<input type="file" name="imagefile" accept="image/gif, image/jpeg" id="i_file">
+								<input type="file" name="imagefile" accept="image/gif, image/jpeg" id="i_file" required>
+								<span class="label label-important">NOTE!</span>
+								<span>Ukuran Foto Max 300 KB</span>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">Scan KTP</label>
+							<div class="controls">
+								<input type="file" name="imagektp" accept="image/gif, image/jpeg" id="i_file" required>
 								<span class="label label-important">NOTE!</span>
 								<span>Ukuran Foto Max 300 KB</span>
 							</div>

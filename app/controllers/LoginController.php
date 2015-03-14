@@ -173,13 +173,20 @@ class LoginController extends BaseController {
       $cekKtp = $this->jamaah->checkNoKtpSama($input);
 
       $file = Input::file('imagefile');
+      $imagektp = Input::file('imagektp');
+      $imagespph = Input::file('imagespph');
 
         $rules = array(
-            'image' => 'image|max:300'
+            'image'         => 'image|max:300',
+            'imagektp'      => 'image|max:300',
+            'imagespph'     => 'image|max:300'
+
         );
 
         $inputs = array(
-            'image' => Input::file('imagefile')
+            'image'         => Input::file('imagefile'),
+            'imagektp'      => Input::file('imagektp'),
+            'imagespph'     => Input::file('imagespph')
         );
 
         $valid = Validator::make($inputs, $rules);
@@ -202,7 +209,7 @@ class LoginController extends BaseController {
                 
                   if( $cek AND $cekKtp ){
 
-                        if (!empty($file)){
+                        if ( (!empty($file)) && (!empty($imagektp)) && (!empty($imagespph)) ){
 
                             if($valid->fails()){
 
@@ -216,15 +223,27 @@ class LoginController extends BaseController {
                             
                             }else{
                             
-                                $extension = $file->getClientOriginalExtension();
-                                $filename = $input['nama'].'_'.$input['no_ktp'].'.'.$extension;
-                                $directory = public_path().'/images/user';
+                                $extension          = $file->getClientOriginalExtension();
+                                $filename           = $input['nama'].'_'.$input['no_ktp'].'.'.$extension;
+                                $directory          = public_path().'/images/user';
+
+                                $extension2         = $imagektp->getClientOriginalExtension();
+                                $filename2          = $input['nama'].'_'.$input['no_ktp'].'.'.$extension2;
+                                $directory2         = public_path().'/images/ktp';
+
+                                $extension3         = $imagespph->getClientOriginalExtension();
+                                $filename3          = $input['nama'].'_'.$input['no_ktp'].'.'.$extension3;
+                                $directory3         = public_path().'/images/spph';
                                 
-                                $upload_success = Input::file('imagefile')->move($directory, $filename); 
+                                $upload_success     = Input::file('imagefile')->move($directory, $filename); 
+                                $upload_success2    = Input::file('imagektp')->move($directory2, $filename2);
+                                $upload_success3    = Input::file('imagespph')->move($directory3, $filename3);
                                    
-                                if( $upload_success ) {
+                                if( $upload_success && $upload_success2 && $upload_success3 ) {
                                     
-                                    $input['foto'] = $filename;
+                                    $input['foto']      = $filename;
+                                    $input['scanktp']   = $filename2;
+                                    $input['scanspph']  = $filename3;
                             
                                 }else{
 
@@ -287,13 +306,17 @@ class LoginController extends BaseController {
       $cek   = $this->user->usernameSama($input);
       $input['status-jamaah'] = 0;
       $file = Input::file('imagefile');
+      $imagektp = Input::file('imagektp');
 
         $rules = array(
-            'image' => 'image|max:300'
+            'image'         => 'image|max:300',
+            'imagektp'      => 'image|max:300'
+
         );
 
         $inputs = array(
-            'image' => Input::file('imagefile')
+            'image'         => Input::file('imagefile'),
+            'imagektp'      => Input::file('imagektp')
         );
 
         $valid = Validator::make($inputs, $rules);
@@ -315,7 +338,7 @@ class LoginController extends BaseController {
                 
                   if( $cek ){
 
-                        if (!empty($file)){
+                        if ( (!empty($file))  &&  (!empty($imagektp)) ){
 
                             if($valid->fails()){
 
@@ -329,15 +352,23 @@ class LoginController extends BaseController {
                             
                             }else{
                             
-                                $extension = $file->getClientOriginalExtension();
-                                $filename = $input['nama'].'_'.$input['no_ktp'].'.'.$extension;
-                                $directory = public_path().'/images/user';
+                                $extension          = $file->getClientOriginalExtension();
+                                $filename           = $input['nama'].'_'.$input['no_ktp'].'.'.$extension;
+                                $directory          = public_path().'/images/user';
+
+                                $extension2         = $file->getClientOriginalExtension();
+                                $filename2          = $input['nama'].'_'.$input['no_ktp'].'.'.$extension2;
+                                $directory2         = public_path().'/images/ktp';
                                 
-                                $upload_success = Input::file('imagefile')->move($directory, $filename); 
+                                $upload_success     = Input::file('imagefile')->move($directory, $filename);
+                                $upload_success2    = Input::file('imagektp')->move($directory2, $filename2);
+
                                    
                                 if( $upload_success ) {
                                     
-                                    $input['foto'] = $filename;
+                                    $input['foto']      = $filename;
+                                    $input['scanktp']   = $filename2;
+                                    $input['scanspph']  = '';
                             
                                 }else{
 

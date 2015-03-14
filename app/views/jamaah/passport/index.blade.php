@@ -64,6 +64,7 @@
                     </h3>
                 </div>
                 <div class="portlet-body">
+                    <h2>Pembuatan Passport</h2>
                     <table class="table table-striped" id="sample_3">
                         <thead>
                             <tr>
@@ -77,18 +78,54 @@
                         <tbody>
                             <?php $no = 1; ?>
                             @foreach ($data['passport'] as $passport)
+                                @if($passport->uraian != 'Pengambilan Buku Passport')
+                                    <tr>
+                                        <td>{{ $no }}</td>
+                                        <td class="hidden-phone">{{ date("d M Y", strtotime( $passport->tanggal_pembuatan ) ) }}</td>
+                                        <td class="hidden-phone">{{ $passport->waktu_pembuatan_awal }} - {{ $passport->waktu_pembuatan_akhir }}</td>
+                                        <td class="hidden-phone">{{ $passport->tempat_pembuatan }}</td>
+                                        <td class="hidden-phone">
+                                                <center>
+                                                    <a href="{{ URL::asset('jamaah/passport/cetak/'.$passport->iddetailpassport) }}" class="btn mini green icn-only editData"><i class="icon-print icon-white"></i> Cetak</a>
+                                                </center>
+                                            </td>
+                                    </tr>
+                                    <?php $no++; ?>
+                                @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="portlet-body">
+                    <h2>Pengambilan Buku Passport</h2>
+                    <table class="table table-striped" id="sample_3">
+                        <thead>
                             <tr>
-                                <td>{{ $no }}</td>
-                                <td class="hidden-phone">{{ date("d M Y", strtotime( $passport->tanggal_pembuatan ) ) }}</td>
-                                <td class="hidden-phone">{{ $passport->waktu_pembuatan_awal }} - {{ $passport->waktu_pembuatan_akhir }}</td>
-                                <td class="hidden-phone">{{ $passport->tempat_pembuatan }}</td>
-                                <td class="hidden-phone">
-                                        <center>
-                                            <a href="{{ URL::asset('jamaah/passport/cetak/'.$passport->iddetailpassport) }}" class="btn mini green icn-only editData"><i class="icon-print icon-white"></i> Cetak</a>
-                                        </center>
-                                    </td>
+                                <th class="hidden-phone" width='5%'>No.</th>
+                                <th class="hidden-phone" width='25%'>Tanggal Pengambilan</th>
+                                <th class="hidden-phone" width='25%'>Waktu Pengambilan</th>
+                                <th class="hidden-phone" width='25%'>Tempat Pengambilan</th>
+                                <th class="hidden-phone"></th>
                             </tr>
-                            <?php $no++; ?>
+                        </thead>
+                        <tbody>
+                            <?php $no = 1; ?>
+                            @foreach ($data['passport'] as $passport)
+                                @if($passport->uraian == 'Pengambilan Buku Passport')
+                                    <tr>
+                                        <td>{{ $no }}</td>
+                                        <td class="hidden-phone">{{ date("d M Y", strtotime( $passport->tanggal_pembuatan ) ) }}</td>
+                                        <td class="hidden-phone">{{ $passport->waktu_pembuatan_awal }} - {{ $passport->waktu_pembuatan_akhir }}</td>
+                                        <td class="hidden-phone">{{ $passport->tempat_pembuatan }}</td>
+                                        <td class="hidden-phone">
+                                                <center>
+                                                    <a href="{{ URL::asset('jamaah/passport/cetak/'.$passport->iddetailpassport) }}" class="btn mini green icn-only editData"><i class="icon-print icon-white"></i> Cetak</a>
+                                                </center>
+                                            </td>
+                                    </tr>
+                                    <?php $no++; ?>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>

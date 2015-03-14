@@ -47,7 +47,7 @@ table.laporan tbody td{
             <td align="right" colspan=4>
                 <h3>
                     <BR>
-                    JADWAL PEMBUATAN PASSPORT
+                    JADWAL PEMBUATAN & PENGAMBILAN PASSPORT 
                     <br>
                     KBIH PESANTREN AL KARIMIYAH
                     <br>
@@ -59,6 +59,7 @@ table.laporan tbody td{
         </tr>
     </table>
     <hr>
+    <h2>Pembuatan Passport</h2>
 <table class="laporan" id="sample_3" width="100%">
     <thead>
         <tr>
@@ -71,13 +72,41 @@ table.laporan tbody td{
     <tbody>
         <?php $no = 1; ?>
         @foreach ($data['passport'] as $passport)
+            @if($passport->uraian != 'Pengambilan Buku Passport')
+                <tr>
+                    <td>{{ $no }}</td>
+                    <td class="hidden-phone">{{ date("d M Y", strtotime( $passport->tanggal_pembuatan ) ) }}</td>
+                    <td class="hidden-phone">{{ $passport->waktu_pembuatan_awal }} - {{ $passport->waktu_pembuatan_akhir }}</td>
+                    <td class="hidden-phone">{{ $passport->tempat_pembuatan }}</td>
+                </tr>
+                <?php $no++; ?>
+            @endif
+        @endforeach
+    </tbody>
+</table>
+<br>
+<h2>Pengambilan Passport</h2>
+<table class="laporan" id="sample_3" width="100%">
+    <thead>
         <tr>
-            <td>{{ $no }}</td>
-            <td class="hidden-phone">{{ date("d M Y", strtotime( $passport->tanggal_pembuatan ) ) }}</td>
-            <td class="hidden-phone">{{ $passport->waktu_pembuatan_awal }} - {{ $passport->waktu_pembuatan_akhir }}</td>
-            <td class="hidden-phone">{{ $passport->tempat_pembuatan }}</td>
+            <th class="hidden-phone" width='5%'>No.</th>
+            <th class="hidden-phone" width='20%'>Tanggal Pengambilan</th>
+            <th class="hidden-phone" width='15%'>Waktu Pengambilan</th>
+            <th class="hidden-phone" width='15%'>Tempat Pengambilan</th>
         </tr>
-        <?php $no++; ?>
+    </thead>
+    <tbody>
+        <?php $no = 1; ?>
+        @foreach ($data['passport'] as $passport)
+            @if($passport->uraian == 'Pengambilan Buku Passport')
+                <tr>
+                    <td>{{ $no }}</td>
+                    <td class="hidden-phone">{{ date("d M Y", strtotime( $passport->tanggal_pembuatan ) ) }}</td>
+                    <td class="hidden-phone">{{ $passport->waktu_pembuatan_awal }} - {{ $passport->waktu_pembuatan_akhir }}</td>
+                    <td class="hidden-phone">{{ $passport->tempat_pembuatan }}</td>
+                </tr>
+                <?php $no++; ?>
+            @endif
         @endforeach
     </tbody>
 </table>

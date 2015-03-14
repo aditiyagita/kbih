@@ -90,14 +90,16 @@ class Jamaah extends Eloquent {
 	public function getNotHaveCekKesehatan($value)
 	{
 		return DB::select("
-							SELECT x.idtransaksi, jamaah.* FROM `jamaah`
+							SELECT x.idtransaksi, a.desc, jamaah.* FROM `jamaah`
 							join 
 								( SELECT 
 										max(idtransaksi) as idtransaksi, 
-										no_ktp 
+										no_ktp,
+                                 		layanan
 									FROM transaksi 
 									GROUP BY no_ktp 
 								) as x on jamaah.no_ktp = x.no_ktp
+							join generic_master a on a.id = x.layanan
 							WHERE x.idtransaksi NOT IN ( select idtransaksi FROM detailcekkesehatan WHERE idcekkesehatan = ".$value." )
 						");
 	}
@@ -156,6 +158,8 @@ class Jamaah extends Eloquent {
 		$this->gol_darah 	 		= $input['golongan-darah'];
 		$this->status 				= $input['status']; // status 1 not active status 2 active
 		$this->foto 				= $input['foto'];
+		$this->scanktp 				= $input['scanktp'];
+		$this->scanspph  			= $input['scanspph'];
 		$this->pernah_haji_umroh 	= $input['pernah'];
 		$this->nama_mahram			= $input['pendamping'];
 		$this->hub_mahram 			= $input['hub-pendamping'];

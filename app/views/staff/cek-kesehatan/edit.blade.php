@@ -70,8 +70,13 @@ function hapusAction(data){
 				<div class="span12">	
 					<!-- BEGIN PAGE TITLE & BREADCRUMB-->		
 					<h3 class="page-title">
-						Cek Kesehatan
-						<small>Edit Cek Kesehatan</small>
+						@if( $data['cekkesehatan']->jenis_pemeriksaan == 'Pengambilan Buku Hijau' )
+                            Pengambilan Buku Hijau
+                            <small>Edit Pengambilan Buku Hijau</small>
+                        @else
+                            Cek Kesehatan
+                            <small>Edit Cek Kesehatan</small>
+                        @endif
 					</h3>
 					<ul class="breadcrumb">
 						<li>
@@ -80,10 +85,22 @@ function hapusAction(data){
 							<i class="icon-angle-right"></i>
 						</li>
 						<li>
-							<a href="#">Cek Kesehatan</a>
+							<a href="#">
+                                @if( $data['cekkesehatan']->jenis_pemeriksaan == 'Pengambilan Buku Hijau' )
+                                    Pengambilan Buku Hijau
+                                @else
+                                    Cek Kesehatan
+                                @endif
+                            </a>
 							<i class="icon-angle-right"></i>
 						</li>
-						<li><a href="#">Detail Cek Kesehatan</a></li>
+						<li><a href="#">
+                                @if( $data['cekkesehatan']->jenis_pemeriksaan == 'Pengambilan Buku Hijau' )
+                                    Edit Pengambilan Buku Hijau
+                                @else
+                                    Edit Cek Kesehatan
+                                @endif
+                        </a></li>
 					</ul>
 					<!-- END PAGE TITLE & BREADCRUMB-->
 				</div>
@@ -95,7 +112,7 @@ function hapusAction(data){
 					<div class="portlet">
                         <div class="portlet-title">
                             <h3 class="page-title">
-                                Edit Cek Kesehatan
+                                Edit
                                 <small>{{ $data['cekkesehatan']->jenis_pemeriksaan }}</small>
                             </h3>
                         </div>
@@ -104,19 +121,36 @@ function hapusAction(data){
                             <table class="table table-striped" id="sample_3">
                                 <body>
                                     <tr>
-                                        <td class="hidden-phone" width="20%"><strong>Tanggal Pemeriksaan</strong></td>
+                                        <td class="hidden-phone" width="20%">
+                                            @if( $data['cekkesehatan']->jenis_pemeriksaan == 'Pengambilan Buku Hijau' )
+                                                <strong>Tanggal Pengambilan</strong>
+                                            @else
+                                                <strong>Tanggal Pemeriksaan</strong>
+                                            @endif
+                                        </td>
                                         <td class="hidden-phone"><input class="span12 m-wrap" type="date" value="{{ $data['cekkesehatan']->tanggal_pemeriksaan }}" name="tanggal_pemeriksaan" required></td>
                                         <td class="hidden-phone" width="20%"></td>
                                         <td class="hidden-phone"></td>
                                     </tr>
                                     <tr>
-                                        <td class="hidden-phone"><strong>Jenis Pemeriksaan</strong></td>
-                                        <td class="hidden-phone"><input class="span12 m-wrap" type="text" value="{{ $data['cekkesehatan']->jenis_pemeriksaan }}" name="jenis_pemeriksaan" required></td>
+                                        <td class="hidden-phone">
+                                            @if( $data['cekkesehatan']->jenis_pemeriksaan == 'Pengambilan Buku Hijau' )
+                                                <strong>Uraian</strong>
+                                            @else
+                                                <strong>Jenis Pemeriksaan</strong>
+                                            @endif</td>
+                                        <td class="hidden-phone"><input class="span12 m-wrap" type="text" value="{{ $data['cekkesehatan']->jenis_pemeriksaan }}" name="jenis_pemeriksaan" required readonly></td>
                                         <td class="hidden-phone"></td>
                                         <td class="hidden-phone"></td>
                                     </tr>
                                     <tr>
-                                        <td class="hidden-phone"><strong>Waktu Pemeriksaan</strong></td>
+                                        <td class="hidden-phone">
+                                            @if( $data['cekkesehatan']->jenis_pemeriksaan == 'Pengambilan Buku Hijau' )
+                                                <strong>Waktu Pengambilan</strong>
+                                            @else
+                                                <strong>Waktu Pemeriksaan</strong>
+                                            @endif
+                                        </td>
                                         <td class="hidden-phone">
                                             Dari:
                                             <input class="span12 m-wrap" type="text" value="{{ $data['cekkesehatan']->waktu_pemeriksaan_mulai }}" name="waktu_pemeriksaan_mulai" pattern="^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$" required>
@@ -127,7 +161,13 @@ function hapusAction(data){
                                         <td class="hidden-phone"></td>
                                     </tr>
                                     <tr>
-                                        <td class="hidden-phone"><strong>Tempat Pemeriksaan</strong></td>
+                                        <td class="hidden-phone">
+                                            @if( $data['cekkesehatan']->jenis_pemeriksaan == 'Pengambilan Buku Hijau' )
+                                                <strong>Tempat Pengambilan</strong>
+                                            @else
+                                                <strong>Tempat Pemeriksaan</strong>
+                                            @endif
+                                        </td>
                                         <td class="hidden-phone">
                                             <input class="span12 m-wrap" type="text" value="{{ $data['cekkesehatan']->tempat_pemeriksaan }}" name="tempat_pemeriksaan" required>
                                         </td>

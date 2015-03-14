@@ -64,6 +64,7 @@
                     </h3>
                 </div>
                 <div class="portlet-body">
+                    <h2>Data Cek Kesehatan</h2>
                     <table class="table table-striped" id="sample_3">
                         <thead>
                             <tr>
@@ -78,19 +79,57 @@
                         <tbody>
                             <?php $i = 1; ?>
                             @foreach( $data['cekkesehatan'] as $cekkesehatan )
-                                <tr>
-                                    <td class="hidden-phone">{{ $i }}</td>
-                                    <td class="hidden-phone">{{ $cekkesehatan->jenis_pemeriksaan }}</td>
-                                    <td class="hidden-phone">{{ $cekkesehatan->waktu_pemeriksaan_mulai }} - {{ $cekkesehatan->waktu_pemeriksaan_selesai }}</td>
-                                    <td class="hidden-phone">{{ $cekkesehatan->tempat_pemeriksaan }}</td>
-                                    <td class="hidden-phone">{{ date("d M Y", strtotime( $cekkesehatan->tanggal_pemeriksaan ) ) }}</td>
-                                    <td class="hidden-phone">
-                                        <center>
-                                            <a href="{{ URL::asset('jamaah/cekkesehatan/cetak/'.$cekkesehatan->iddetailcekkesehatan) }}" class="btn mini green icn-only editData"><i class="icon-print icon-white"></i> Cetak</a>
-                                        </center>
-                                    </td>
-                                </tr>
-                            <?php $i++; ?>
+                                @if( $cekkesehatan->jenis_pemeriksaan != 'Pengambilan Buku Hijau' )
+                                    <tr>
+                                        <td class="hidden-phone">{{ $i }}</td>
+                                        <td class="hidden-phone">{{ $cekkesehatan->jenis_pemeriksaan }}</td>
+                                        <td class="hidden-phone">{{ $cekkesehatan->waktu_pemeriksaan_mulai }} - {{ $cekkesehatan->waktu_pemeriksaan_selesai }}</td>
+                                        <td class="hidden-phone">{{ $cekkesehatan->tempat_pemeriksaan }}</td>
+                                        <td class="hidden-phone">{{ date("d M Y", strtotime( $cekkesehatan->tanggal_pemeriksaan ) ) }}</td>
+                                        <td class="hidden-phone">
+                                            <center>
+                                                <a href="{{ URL::asset('jamaah/cekkesehatan/cetak/'.$cekkesehatan->iddetailcekkesehatan) }}" class="btn mini green icn-only editData"><i class="icon-print icon-white"></i> Cetak</a>
+                                            </center>
+                                        </td>
+                                    </tr>
+                                <?php $i++; ?>
+                                @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="portlet-body">
+                    <h2>Pengambilan Buku Hijau</h2>
+                    <table class="table table-striped" id="sample_3">
+                        <thead>
+                            <tr>
+                                <th class="hidden-phone">No.</th>
+                                <th class="hidden-phone">Uraian</th>
+                                <th class="hidden-phone">Waktu Pengambilan</th>
+                                <th class="hidden-phone">Tempat Pengambilan</th>
+                                <th class="hidden-phone">Tanggal Pengambilan</th>
+                                <th class="hidden-phone"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $i = 1; ?>
+                            @foreach( $data['cekkesehatan'] as $cekkesehatan )
+                                @if( $cekkesehatan->jenis_pemeriksaan == 'Pengambilan Buku Hijau')
+                                    <tr>
+                                        <td class="hidden-phone">{{ $i }}</td>
+                                        <td class="hidden-phone">{{ $cekkesehatan->jenis_pemeriksaan }}</td>
+                                        <td class="hidden-phone">{{ $cekkesehatan->waktu_pemeriksaan_mulai }} - {{ $cekkesehatan->waktu_pemeriksaan_selesai }}</td>
+                                        <td class="hidden-phone">{{ $cekkesehatan->tempat_pemeriksaan }}</td>
+                                        <td class="hidden-phone">{{ date("d M Y", strtotime( $cekkesehatan->tanggal_pemeriksaan ) ) }}</td>
+                                        <td class="hidden-phone">
+                                            <center>
+                                                <a href="{{ URL::asset('jamaah/cekkesehatan/cetak/'.$cekkesehatan->iddetailcekkesehatan) }}" class="btn mini green icn-only editData"><i class="icon-print icon-white"></i> Cetak</a>
+                                            </center>
+                                        </td>
+                                    </tr>
+                                <?php $i++; ?>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>

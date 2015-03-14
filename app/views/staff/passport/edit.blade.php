@@ -70,8 +70,13 @@ function hapusAction(data){
 				<div class="span12">	
 					<!-- BEGIN PAGE TITLE & BREADCRUMB-->		
 					<h3 class="page-title">
-						Pembuatan Passport
-						<small>Edit Pembuatan Passport</small>
+                        @if( $data['passport']->uraian == 'Pengambilan Buku Passport' )
+                            Pengambilan Passport
+                            <small>Edit Pengambilan Passport</small>
+                        @else
+                            Pembuatan Passport
+                            <small>Edit Pembuatan Passport</small>
+                        @endif
 					</h3>
 					<ul class="breadcrumb">
 						<li>
@@ -80,10 +85,22 @@ function hapusAction(data){
 							<i class="icon-angle-right"></i>
 						</li>
 						<li>
-							<a href="#">Pembuatan Passport</a>
+							<a href="#">
+                                @if( $data['passport']->uraian == 'Pengambilan Buku Passport' )
+                                    Pengambilan Passport
+                                @else
+                                    Pembuatan Passport
+                                @endif
+                            </a>
 							<i class="icon-angle-right"></i>
 						</li>
-						<li><a href="#">Edit Pembuatan Passport</a></li>
+						<li><a href="#">
+                                @if( $data['passport']->uraian == 'Pengambilan Buku Passport' )
+                                    Edit Pengambilan Passport
+                                @else
+                                    Edit Pembuatan Passport
+                                @endif
+                            </a></li>
 					</ul>
 					<!-- END PAGE TITLE & BREADCRUMB-->
 				</div>
@@ -95,7 +112,11 @@ function hapusAction(data){
 					<div class="portlet">
                         <div class="portlet-title">
                             <h3 class="page-title">
-                                Data Pembuatan Passport
+                                @if( $data['passport']->uraian == 'Pengambilan Buku Passport' )
+                                    Data Pengambilan Passport
+                                @else
+                                    Data Pembuatan Passport
+                                @endif
                             </h3>
                         </div>
                         <div class="portlet-body">
@@ -103,13 +124,25 @@ function hapusAction(data){
                             <table class="table table-striped" id="sample_3">
                                 <body>
                                     <tr>
-                                        <td class="hidden-phone" width="20%"><strong>Tanggal Pembuatan</strong></td>
+                                        <td class="hidden-phone" width="20%">
+                                            @if( $data['passport']->uraian == 'Pengambilan Buku Passport' )
+                                            <strong>Tanggal Pengambilan</strong>
+                                            @else                                                
+                                            <strong>Tanggal Pembuatan</strong>
+                                            @endif
+                                        </td>
                                         <td class="hidden-phone"><input class="span12 m-wrap" type="date" value="{{ $data['passport']->tanggal_pembuatan }}" name="tanggal_pembuatan" required></td>
                                         <td class="hidden-phone" width="20%"></td>
                                         <td class="hidden-phone"></td>
                                     </tr>
                                     <tr>
-                                        <td class="hidden-phone"><strong>Waktu Pembuatan</strong></td>
+                                        <td class="hidden-phone">
+                                            @if( $data['passport']->uraian == 'Pengambilan Buku Passport' )
+                                            <strong>Waktu Pengambilan</strong>
+                                            @else                                                
+                                            <strong>Waktu Pembuatan</strong>
+                                            @endif
+                                        </td>
                                         <td class="hidden-phone">
                                             Dari:
                                             <input class="span12 m-wrap" type="text" value="{{ $data['passport']->waktu_pembuatan_awal }}" name="waktu_pembuatan_awal" pattern="^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$" required>
@@ -120,7 +153,13 @@ function hapusAction(data){
                                         <td class="hidden-phone"></td>
                                     </tr>
                                     <tr>
-                                        <td class="hidden-phone"><strong>Tempat Pembuatan</strong></td>
+                                        <td class="hidden-phone">
+                                            @if( $data['passport']->uraian == 'Pengambilan Buku Passport' )
+                                            <strong>Tempat Pengambilan</strong>
+                                            @else                                                
+                                            <strong>Tempat Pembuatan</strong>
+                                            @endif
+                                        </td>
                                         <td class="hidden-phone">
                                             <input class="span12 m-wrap" type="text" value="{{ $data['passport']->tempat_pembuatan }}" name="tempat_pembuatan" required>
                                         </td>

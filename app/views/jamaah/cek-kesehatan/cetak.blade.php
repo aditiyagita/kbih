@@ -48,7 +48,11 @@ table.laporan tbody td{
             <td align="right" colspan=4>
                 <h3>
                     <BR>
-                    JADWAL CEK KESEHATAN
+                    @if($data['cekkesehatan']->cekkesehatan->jenis_pemeriksaan != 'Pengambilan Buku Hijau')
+                        JADWAL CEK KESEHATAN
+                    @else
+                        JADWAL PENGAMBILAN BUKU HIJAU
+                    @endif
                     <br>
                     KBIH PESANTREN AL KARIMIYAH
                     <br>
@@ -60,7 +64,9 @@ table.laporan tbody td{
         </tr>
     </table>
     <hr>
+@if($data['cekkesehatan']->cekkesehatan->jenis_pemeriksaan != 'Pengambilan Buku Hijau')
 <center><h4>SURAT PENGANTAR CEK KESEHATAN JAMAAH KBIH AL KARIMIYAH</h4></center>
+@endif
 <table class="laporan" id="sample_3" width="100%">
     <tbody>
         <tr>
@@ -68,19 +74,38 @@ table.laporan tbody td{
             <td>{{ $data['cekkesehatan']->transaksi->jamaah->namalengkap }}</td>
         </tr>
         <tr>
-            <td width="25%">Jenis Pemeriksaan</td>
+            <td width="25%">
+                @if($data['cekkesehatan']->cekkesehatan->jenis_pemeriksaan != 'Pengambilan Buku Hijau')
+                    Jenis Pemeriksaan
+                @else
+                    Uraian
+                @endif
+            </td>
             <td>{{ $data['cekkesehatan']->cekkesehatan->jenis_pemeriksaan }}</td>
         </tr>
         <tr>
-            <td width="25%">Tempat Pemeriksaan</td>
+            <td width="25%">
+                @if($data['cekkesehatan']->cekkesehatan->jenis_pemeriksaan != 'Pengambilan Buku Hijau')
+                    Tempat Pemeriksaan
+                @else
+                    Tempat Pengambilan
+                @endif
+            </td>
             <td>{{ $data['cekkesehatan']->cekkesehatan->tempat_pemeriksaan }}</td>
         </tr>
         <tr>
-            <td width="25%">Tanggal Pemeriksaan</td>
+            <td width="25%">
+                @if($data['cekkesehatan']->cekkesehatan->jenis_pemeriksaan != 'Pengambilan Buku Hijau')
+                    Tanggal Pemeriksaan
+                @else
+                    Tanggal Pengambilan
+                @endif
+            </td>
             <td>{{ date("d M Y", strtotime( $data['cekkesehatan']->cekkesehatan->tanggal_pemeriksaan ) ) }}</td>
         </tr>
     </tbody>
 </table>
+@if($data['cekkesehatan']->cekkesehatan->jenis_pemeriksaan != 'Pengambilan Buku Hijau')
 <table width="100%">
     <tr>
         <td><br><br><br><br></td>
@@ -93,3 +118,4 @@ table.laporan tbody td{
         <td width="30%"><center>( {{ $data['user']->pegawai->namalengkap }} )</center></td>
     </tr>
 </table>
+@endif

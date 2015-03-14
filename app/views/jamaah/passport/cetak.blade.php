@@ -48,7 +48,11 @@ table.laporan tbody td{
             <td align="right" colspan=4>
                 <h3>
                     <BR>
+                    @if($data['passport']->passport->uraian == 'Pengambilan Buku Passport')
+                    JADWAL PENGAMBILAN BUKU PASSPORT
+                    @else
                     JADWAL PEMBUATAN PASSPORT
+                    @endif
                     <br>
                     KBIH PESANTREN AL KARIMIYAH
                     <br>
@@ -60,7 +64,9 @@ table.laporan tbody td{
         </tr>
     </table>
     <hr>
+@if($data['passport']->passport->uraian != 'Pengambilan Buku Passport')
 <center><h4>SURAT PENGANTAR PEMBUATAN PASSPORT JAMAAH KBIH AL KARIMIYAH</h4></center>
+@endif
 <table class="laporan" id="sample_3" width="100%">
     <tbody>
         <tr>
@@ -68,19 +74,38 @@ table.laporan tbody td{
             <td>{{ $data['passport']->jamaah->namalengkap }}</td>
         </tr>
         <tr>
-            <td width="25%">Tanggal Pembuatan</td>
+            <td width="25%">
+                @if($data['passport']->passport->uraian == 'Pengambilan Buku Passport')
+                Tanggal Pengambilan
+                @else
+                Tanggal Pembuatan
+                @endif
+            </td>
             <td>{{ date("d M Y", strtotime( $data['passport']->passport->tanggal_pembuatan ) ) }}</td>
         </tr>
         <tr>
-            <td width="25%">Waktu Pembuatan</td>
+            <td width="25%">
+                @if($data['passport']->passport->uraian == 'Pengambilan Buku Passport')
+                Waktu Pengambilan
+                @else
+                Waktu Pembuatan
+                @endif
+            </td>
             <td>Dari : {{ $data['passport']->passport->waktu_pembuatan_awal }} Sampai Dengan : {{ $data['passport']->passport->waktu_pembuatan_akhir }}</td>
         </tr>
         <tr>
-            <td width="25%">Tempat Pembuatan</td>
+            <td width="25%">
+                @if($data['passport']->passport->uraian == 'Pengambilan Buku Passport')
+                Tempat Pengambilan
+                @else
+                Tempat Pembuatan
+                @endif
+            </td>
             <td>{{ $data['passport']->passport->tempat_pembuatan }}</td>
         </tr>
     </tbody>
 </table>
+@if($data['passport']->passport->uraian != 'Pengambilan Buku Passport')
 <table width="100%">
     <tr>
         <td><br><br><br><br></td>
@@ -92,3 +117,4 @@ table.laporan tbody td{
         <td width="50%"><center>( {{ $data['user']->pegawai->namalengkap }} )</center></td>
     </tr>
 </table>
+@endif

@@ -106,18 +106,16 @@ function hapusAction(data){
                                         <td class="hidden-phone" width="20%"><strong>No. KTP</strong></td>
                                         <td class="hidden-phone">{{ $data['jamaah']->no_ktp }}</td>
                                         <td class="hidden-phone"></td>
-                                        <td class="hidden-phone"></td>
+                                        <td class="hidden-phone" rowspan=5><img src="{{ URL::asset('images/user'.$data['jamaah']->foto) }}"></td>
                                     </tr>
                                     <tr>
                                         <td class="hidden-phone"><strong>Nama Lengkap</strong></td>
                                         <td class="hidden-phone">{{ $data['jamaah']->namalengkap }}</td>
                                         <td class="hidden-phone"></td>
-                                        <td class="hidden-phone"></td>
                                     </tr>
                                     <tr>
                                         <td class="hidden-phone"><strong>Nama Ayah</strong></td>
                                         <td class="hidden-phone">{{ $data['jamaah']->ayah }}</td>
-                                        <td class="hidden-phone"></td>
                                         <td class="hidden-phone"></td>
                                     </tr>
                                     <tr>
@@ -127,12 +125,10 @@ function hapusAction(data){
                                             {{ substr(($data['jamaah']->tanggal_lahir), 0, 10) }}
                                         </td>
                                         <td class="hidden-phone"></td>
-                                        <td class="hidden-phone"></td>
                                     </tr>
                                     <tr>
                                         <td class="hidden-phone"><strong>Umur</strong></td>
                                         <td class="hidden-phone">{{ $data['jamaah']->umur }}</td>
-                                        <td class="hidden-phone"></td>
                                         <td class="hidden-phone"></td>
                                     </tr>
                                     <tr>
@@ -237,6 +233,18 @@ function hapusAction(data){
                                         </td>
                                         <td class="hidden-phone"></td>
                                         <td class="hidden-phone"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hidden-phone" colspan=2><strong>Scan KTP</strong></td>
+                                        <td class="hidden-phone" colspan=2><strong>Scan SPPH (Jika Haji)</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hidden-phone" colspan=2>
+                                            <img src="{{ URL::asset('images/ktp'.$data['jamaah']->scanktp) }}">
+                                        </td>
+                                        <td class="hidden-phone" colspan=2>
+                                            <img src="{{ URL::asset('images/spph'.$data['jamaah']->scanspph) }}">
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
